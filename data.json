@@ -1,0 +1,11 @@
+{
+    "cards":[
+        {
+            "word":"dog",
+            "partOfSpeech":"n",
+            "translation":"狗",
+            "example":"The dog is cute."
+            
+        }
+    ]
+}
