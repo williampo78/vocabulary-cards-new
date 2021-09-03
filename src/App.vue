@@ -1,15 +1,20 @@
 <template>
   <div id="app">
+    <Header />
     <div id="nav">
-      <router-link to="/">單字學習</router-link> |
-      <router-link to="/about">單字添加</router-link>
+      <router-link to="/">單字添加</router-link> |
+      <router-link to="/learn">單字學習</router-link>
     </div>
     <router-view />
   </div>
 </template>
 
 <script>
+import Header from "../src/components/Hader.vue";
 export default {
+  components: {
+    Header,
+  },
   data() {
     return {};
   },

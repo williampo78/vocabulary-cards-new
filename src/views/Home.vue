@@ -1,13 +1,26 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
-    <div class="card">
+    <Input :input="input" :cards="cards" />
+    <div v-if="connectedToDB" class="card">
       <ol>
         <li v-for="(card, index) in cards" :key="index">
           {{ card.word }} ({{ card.partOfSpeech }}) {{ card.translation }}
           <br />
           e.g. {{ card.example }}
+          <button @click="startEdit(index)">修改</button>
+          <button @click="deleteHandler(index)">刪除</button>
+          <div v-if="editedCard === index && updateCancelHandler">
+            單字: <input type="text" v-model.trim="editInput.word" /> 詞性:
+            <input type="text" v-model.trim="editInput.partOfSpeech" /> 中文:
+            <input type="text" v-model.trim="editInput.translation" /> 例句:
+            <input
+              type="text"
+              v-model.trim="editInput.example"
+              @keyup.enter="updateHandler(index)"
+            />
+            <button @click="updateHandler(index)">更新</button>
+            <button @click="updateCancelHandler(index)">取消更新</button>
+          </div>
         </li>
       </ol>
     </div>
@@ -17,23 +30,78 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from "@/components/HelloWorld.vue";
-
+import Input from "@/components/Input.vue";
 import axios from "axios";
+
 export default {
   name: "Home",
   components: {
     // HelloWorld,
+    Input,
   },
   data() {
     return {
+      editedCard: null,
+      connectedToDB: false,
       cards: [{ word: "", partOfSpeech: "", translation: "", example: "" }],
+      input: {
+        word: "",
+        partOfSpeech: "",
+        translation: "",
+        example: "",
+      },
+      editInput: {
+        word: "",
+        partOfSpeech: "",
+        translation: "",
+        example: "",
+      },
     };
   },
   mounted() {
     axios.get("http://localhost:3000/cards").then((res) => {
       console.log(res.data);
       this.cards = res.data;
+      this.connectedToDB = true;
     });
+  },
+  methods: {
+    startEdit(index) {
+      this.editInput.word = this.cards[index].word;
+      this.editInput.partOfSpeech = this.cards[index].partOfSpeech;
+      this.editInput.translation = this.cards[index].translation;
+      this.editInput.example = this.cards[index].example;
+      this.editedCard = index;
+      console.log(this.editedCard, index);
+    },
+    deleteHandler(index) {
+      let target = this.cards[index];
+      axios.delete(`http://localhost:3000/cards/${target.id}`).then((res) => {
+        this.cards.splice(index, 1);
+        console.log(res);
+      });
+    },
+    updateHandler(index) {
+      let target = this.cards[index];
+      axios
+        .patch(`http://localhost:3000/cards/${target.id}`, {
+          word: this.editInput.word,
+          partOfSpeech: this.editInput.partOfSpeech,
+          translation: this.editInput.translation,
+          example: this.editInput.example,
+        })
+        .then((res) => {
+          this.editInput.word = "";
+          this.editInput.partOfSpeech = "";
+          this.editInput.translation = "";
+          this.editInput.example = "";
+          this.cards.splice(index, 1, res.data);
+          this.editedCard = null;
+        });
+    },
+    updateCancelHandler(index) {
+      this.editedCard = null;
+    },
   },
 };
 </script>

@@ -1,16 +1,11 @@
 {
   "cards": [
     {
-      "word": "dog",
-      "partOfSpeech": "n",
-      "translation": "狗",
-      "example": "The dog is cute."
-    },
-    {
-      "word": "cat",
-      "partOfSpeech": "n",
-      "translation": "貓",
-      "example": "The cat is cute."
+      "word": "adsa",
+      "partOfSpeech": "as",
+      "translation": "aasdsa",
+      "example": "Asdsa",
+      "id": 1
     }
   ]
 }
