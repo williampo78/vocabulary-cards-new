@@ -5,7 +5,7 @@
       <ol>
         <li v-for="(card, index) in cards" :key="index">
           {{ card.word }} ({{ card.partOfSpeech }}) {{ card.translation }}
-          <br />
+          <!-- <br /> -->
           e.g. {{ card.example }}
           <button class="beforeEdit" @click="startEdit(index)">修改</button>
           <button class="beforeEdit" @click="deleteHandler(index)">刪除</button>
@@ -19,7 +19,7 @@
               @keyup.enter="updateHandler(index)"
             />
             <button @click="updateHandler(index)">更新</button>
-            <button @click="updateCancelHandler(index)">取消更新</button>
+            <button @click="updateCancelHandler(index)">取消</button>
           </div>
         </li>
       </ol>
@@ -107,13 +107,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-li {
-  cursor: default;
-  .beforeEdit {
-    display: none;
-  }
-  &:hover .beforeEdit {
-    display: inline-block;
+ol {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  li {
+    // margin-left: 50px;
+    // display: flex;
+    cursor: default;
+    .beforeEdit {
+      display: none;
+    }
+    &:hover .beforeEdit {
+      display: inline-block;
+    }
   }
 }
 </style>
