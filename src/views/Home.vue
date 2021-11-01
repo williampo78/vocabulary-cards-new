@@ -7,10 +7,10 @@
           {{ card.word }} ({{ card.partOfSpeech }}) {{ card.translation }}
           <br />
           e.g. {{ card.example }}
-          <button @click="startEdit(index)">修改</button>
-          <button @click="deleteHandler(index)">刪除</button>
+          <button class="beforeEdit" @click="startEdit(index)">修改</button>
+          <button class="beforeEdit" @click="deleteHandler(index)">刪除</button>
           <div v-if="editedCard === index && updateCancelHandler">
-            單字: <input type="text" v-model.trim="editInput.word" /> 詞性:
+            單字:
             <input type="text" v-model.trim="editInput.partOfSpeech" /> 中文:
             <input type="text" v-model.trim="editInput.translation" /> 例句:
             <input
@@ -60,7 +60,7 @@ export default {
   },
   mounted() {
     axios.get("http://localhost:3000/cards").then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       this.cards = res.data;
       this.connectedToDB = true;
     });
@@ -105,3 +105,15 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+li {
+  cursor: default;
+  .beforeEdit {
+    display: none;
+  }
+  &:hover .beforeEdit {
+    display: inline-block;
+  }
+}
+</style>

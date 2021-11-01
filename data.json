@@ -1,11 +1,25 @@
 {
   "cards": [
     {
-      "word": "adsa",
-      "partOfSpeech": "as",
-      "translation": "aasdsa",
-      "example": "Asdsa",
-      "id": 1
+      "word": "cat",
+      "partOfSpeech": "n",
+      "translation": "貓",
+      "example": "The cat is cute.",
+      "id": 2
+    },
+    {
+      "word": "pig",
+      "partOfSpeech": "n",
+      "translation": "豬",
+      "example": "The pig is cute",
+      "id": 3
+    },
+    {
+      "word": "forsake",
+      "partOfSpeech": "v",
+      "translation": "放棄、拋棄、離開",
+      "example": "He forsakes his job, pursuing his dream.",
+      "id": 5
     }
   ]
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="input">
-    單字: <input type="text" v-model.trim="input.word" /> 詞性:
+    單字: <input type="text" ref="word" v-model.trim="input.word" /> 詞性:
     <input type="text" v-model.trim="input.partOfSpeech" /> 中文:
     <input type="text" v-model.trim="input.translation" /> 例句:
     <input type="text" v-model.trim="input.example" @keyup.enter="addWord" />
@@ -48,12 +48,16 @@ export default {
           input.translation = "";
           input.example = "";
           this.cards.push(res.data);
-          console.log(res);
+          // console.log(res);
         })
         .catch((err) => {
           console.log(err.response);
         });
     },
+  },
+  mounted() {
+    this.$refs.word.focus();
+    // console.log(this);
   },
 };
 </script>
