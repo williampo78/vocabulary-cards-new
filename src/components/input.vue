@@ -17,7 +17,7 @@
         v-model.trim="input.example"
         @keyup.enter="addWord"
       />
-
+      <br />
       <button
         v-if="
           input.example &&
@@ -98,19 +98,23 @@ export default {
   flex-direction: column;
   align-items: center;
   form {
+    padding: 10px 0;
     background: #fff;
     // display: flex;
     // flex-wrap: wrap;
     width: 90%;
-    height: 200px;
-    font-size: 20px;
+    min-height: 200px;
+    font-size: 23px;
     font-weight: bold;
     input {
+      margin: 15px 0;
       width: 70%;
       height: 20px;
       outline: none;
       border: none;
       border-bottom: 1px solid black;
+      font-size: 20px;
+      padding-left: 3px;
     }
     // .pos {
     //   width: 50px;
