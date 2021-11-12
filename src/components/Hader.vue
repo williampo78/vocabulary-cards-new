@@ -10,4 +10,16 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 150px;
+  background: #f1efee;
+  h1 {
+    color: #3d405b;
+  }
+}
+</style>

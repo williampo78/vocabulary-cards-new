@@ -8,10 +8,16 @@
           <!-- <br /> -->
           e.g. {{ card.example }}
           <button class="beforeEdit" @click="startEdit(index)">修改</button>
-          <button class="beforeEdit" @click="deleteHandler(index)">刪除</button>
+          <button class="beforeEdit" @click="deleteHandler(card.id)">
+            刪除
+          </button>
           <div v-if="editedCard === index && updateCancelHandler">
             單字:
-            <input type="text" v-model.trim="editInput.partOfSpeech" /> 中文:
+            <input type="text" v-model.trim="editInput.word" />
+            詞性:
+            <input type="text" v-model.trim="editInput.partOfSpeech" />
+
+            中文:
             <input type="text" v-model.trim="editInput.translation" /> 例句:
             <input
               type="text"
@@ -29,9 +35,10 @@
 
 <script>
 // @ is an alias to /src
-// import HelloWorld from "@/components/HelloWorld.vue";
 import Input from "@/components/Input.vue";
-import axios from "axios";
+// import axios from "axios";
+// import { getFirestore, addDoc } from "firebase/firestore";
+import { db, colRef, getDocs, deleteDoc, doc, onSnapshot } from "../firebase";
 
 export default {
   name: "Home",
@@ -43,7 +50,8 @@ export default {
     return {
       editedCard: null,
       connectedToDB: false,
-      cards: [{ word: "", partOfSpeech: "", translation: "", example: "" }],
+      // cards: [{ word: "", partOfSpeech: "", translation: "", example: "" }],
+      cards: [],
       input: {
         word: "",
         partOfSpeech: "",
@@ -59,10 +67,32 @@ export default {
     };
   },
   mounted() {
-    axios.get("http://localhost:3000/cards").then((res) => {
-      // console.log(res.data);
-      this.cards = res.data;
-      this.connectedToDB = true;
+    // axios.get("http://localhost:3000/cards").then((res) => {
+    //   // console.log(res.data);
+    //   this.cards = res.data;
+    //   this.connectedToDB = true;
+    // });
+    getDocs(colRef)
+      .then((snapshot) => {
+        snapshot.docs.forEach((doc) => {
+          // this.cards = [];
+          this.cards.push({ ...doc.data(), id: doc.id });
+        });
+        console.log(this.cards);
+        this.connectedToDB = true;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    // const q = query(colRef);
+
+    onSnapshot(colRef, (snapshot) => {
+      this.cards = [];
+      snapshot.docs.forEach((doc) => {
+        this.cards.push({ ...doc.data(), id: doc.id });
+      });
+      console.log("cards:", this.cards);
     });
   },
   methods: {
@@ -75,10 +105,14 @@ export default {
       console.log(this.editedCard, index);
     },
     deleteHandler(index) {
-      let target = this.cards[index];
-      axios.delete(`http://localhost:3000/cards/${target.id}`).then((res) => {
-        this.cards.splice(index, 1);
-        console.log(res);
+      // let target = this.cards[index];
+      // axios.delete(`http://localhost:3000/cards/${target.id}`).then((res) => {
+      //   this.cards.splice(index, 1);
+      //   console.log(res);
+      // });
+      const docRef = doc(db, "cards", index);
+      deleteDoc(docRef).then(() => {
+        console.log("deleted");
       });
     },
     updateHandler(index) {

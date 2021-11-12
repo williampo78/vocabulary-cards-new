@@ -1,26 +1,42 @@
 <template>
   <div class="input">
-    單字: <input type="text" ref="word" v-model.trim="input.word" /> 詞性:
-    <input class="pos" type="text" v-model.trim="input.partOfSpeech" /> 中文:
-    <input type="text" v-model.trim="input.translation" /> 例句:
-    <input type="text" v-model.trim="input.example" @keyup.enter="addWord" />
+    <form action="">
+      <label for="">單字:</label>
+      <input class="word" type="text" ref="word" v-model.trim="input.word" />
+      <br />
+      <label for="">詞性:</label>
+      <input class="pos" type="text" v-model.trim="input.partOfSpeech" />
+      <br />
+      <label for="">中文:</label>
+      <input class="translate" type="text" v-model.trim="input.translation" />
+      <br />
+      <label for="">例句:</label>
+      <input
+        class="example"
+        type="text"
+        v-model.trim="input.example"
+        @keyup.enter="addWord"
+      />
 
-    <button
-      v-if="
-        input.example &&
-        input.example &&
-        input.translation &&
-        input.partOfSpeech
-      "
-      @click="addWord"
-    >
-      加入
-    </button>
+      <button
+        v-if="
+          input.example &&
+          input.example &&
+          input.translation &&
+          input.partOfSpeech
+        "
+        @click.prevent="addWord"
+      >
+        加入
+      </button>
+    </form>
     <h2>This is input</h2>
   </div>
 </template>
 
 <script>
+import { colRef, addDoc, getDocs } from "../firebase";
+
 import axios from "axios";
 export default {
   name: "Input",
@@ -34,36 +50,71 @@ export default {
       if (!input) {
         return false;
       }
-      axios
-        .post("http://localhost:3000/cards", {
-          word: input.word.toLowerCase(),
-          partOfSpeech: input.partOfSpeech.toLowerCase(),
-          translation: input.translation,
-          example:
-            input.example.charAt(0).toUpperCase() + input.example.slice(1),
-        })
-        .then((res) => {
-          input.word = "";
-          input.partOfSpeech = "";
-          input.translation = "";
-          input.example = "";
-          this.cards.push(res.data);
-          // console.log(res);
-        })
-        .catch((err) => {
-          console.log(err.response);
-        });
+      //   axios
+      //     .post("http://localhost:3000/cards", {
+      //       word: input.word.toLowerCase(),
+      //       partOfSpeech: input.partOfSpeech.toLowerCase(),
+      //       translation: input.translation,
+      //       example:
+      //         input.example.charAt(0).toUpperCase() + input.example.slice(1),
+      //     })
+      //     .then((res) => {
+      //       input.word = "";
+      //       input.partOfSpeech = "";
+      //       input.translation = "";
+      //       input.example = "";
+      //       this.cards.push(res.data);
+      //       // console.log(res);
+      //     })
+      //     .catch((err) => {
+      //       console.log(err.response);
+      //     });
+      // },
+      // this.cards.push(this.input);
+      addDoc(colRef, {
+        word: input.word.toLowerCase(),
+        partOfSpeech: input.partOfSpeech.toLowerCase(),
+        translation: input.translation,
+        example: input.example.charAt(0).toUpperCase() + input.example.slice(1),
+      }).then((res) => {
+        console.log(res);
+      });
+      input.word = "";
+      input.partOfSpeech = "";
+      input.translation = "";
+      input.example = "";
     },
   },
   mounted() {
     this.$refs.word.focus();
-    // console.log(this);
   },
 };
 </script>
 
-<style>
-.pos {
-  width: 50px;
+<style lang="scss" scoped>
+.input {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  form {
+    background: #fff;
+    // display: flex;
+    // flex-wrap: wrap;
+    width: 90%;
+    height: 200px;
+    font-size: 20px;
+    font-weight: bold;
+    input {
+      width: 70%;
+      height: 20px;
+      outline: none;
+      border: none;
+      border-bottom: 1px solid black;
+    }
+    // .pos {
+    //   width: 50px;
+    // }
+  }
 }
 </style>
