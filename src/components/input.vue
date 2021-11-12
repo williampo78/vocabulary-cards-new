@@ -30,7 +30,6 @@
         加入
       </button>
     </form>
-    <h2>This is input</h2>
   </div>
 </template>
 

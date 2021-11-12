@@ -2,6 +2,7 @@
   <div class="home">
     <Input :input="input" :cards="cards" />
     <div v-if="connectedToDB" class="card">
+      <h1>單字列表</h1>
       <ol>
         <li v-for="(card, index) in cards" :key="index">
           {{ card.word }} ({{ card.partOfSpeech }}) {{ card.translation }}
