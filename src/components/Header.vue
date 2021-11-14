@@ -17,9 +17,8 @@ export default {
   justify-content: center;
   width: 100%;
   height: 150px;
-  background: #f1efee;
   h1 {
-    color: #3d405b;
+    color: #204868;
   }
 }
 </style>

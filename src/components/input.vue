@@ -17,18 +17,21 @@
         v-model.trim="input.example"
         @keyup.enter="addWord"
       />
-      <br />
       <button
+        class="btn btn-disabled"
         v-if="
-          input.example &&
-          input.example &&
-          input.translation &&
-          input.partOfSpeech
+          !(
+            input.example &&
+            input.word &&
+            input.translation &&
+            input.partOfSpeech
+          )
         "
-        @click.prevent="addWord"
+        disabled
       >
         加入
       </button>
+      <button class="btn" v-else @click.prevent="addWord">加入</button>
     </form>
   </div>
 </template>
@@ -96,28 +99,41 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   form {
     padding: 10px 0;
-    background: #fff;
-    // display: flex;
-    // flex-wrap: wrap;
-    width: 90%;
+    max-width: 300px;
+    min-width: 50vw;
     min-height: 200px;
     font-size: 23px;
     font-weight: bold;
     input {
-      margin: 15px 0;
+      background: none;
+      margin: 10px 0;
       width: 70%;
-      height: 20px;
+      height: 22px;
       outline: none;
       border: none;
       border-bottom: 1px solid black;
       font-size: 20px;
       padding-left: 3px;
+      word-wrap: break-word;
     }
-    // .pos {
-    //   width: 50px;
-    // }
+    .btn {
+      margin-top: 15px;
+      width: 100px;
+      height: 45px;
+      background: rgba(17, 48, 100, 0.61);
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .btn-disabled {
+      background: rgba(140, 171, 226, 0.61);
+      color: #fff;
+    }
   }
 }
 </style>
