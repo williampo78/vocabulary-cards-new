@@ -250,7 +250,7 @@ export default {
             box-shadow: 0 3px 7px 0 rgb(0 0 0 / 32%);
             .fa-times-circle {
               position: absolute;
-              right: 12px;
+              right: 8px;
               top: 8px;
               color: rgb(71, 71, 71);
               font-size: 18px;
@@ -266,7 +266,7 @@ export default {
             .dlt {
               width: 35%;
               height: 28%;
-              margin: 5px;
+              margin: 10px 5px;
               outline: none;
               border: none;
               border-radius: 5px;
