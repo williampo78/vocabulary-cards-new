@@ -104,8 +104,8 @@ export default {
   justify-content: center;
   form {
     padding: 10px 0;
-    max-width: 300px;
-    min-width: 35vw;
+    max-width: 300x;
+    min-width: 20vw;
     min-height: 200px;
     font-size: 23px;
     font-weight: bold;
