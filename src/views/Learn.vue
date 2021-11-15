@@ -21,12 +21,11 @@
 
 <script>
 import axios from "axios";
-import { db, colRef, getDocs, onSnapshot } from "../firebase";
+import { db, colRef, getDocs } from "../firebase";
 
 export default {
   data() {
     return {
-      // cards: { word: "", partOfSpeech: "", translation: "", example: "" },
       cards: [],
       connectedToDB: false,
       answer: false,
@@ -98,6 +97,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
+      outline: none;
     }
   }
   .fas {
