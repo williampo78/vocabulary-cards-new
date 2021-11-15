@@ -6,12 +6,14 @@
       <div class="cardsBox">
         <ol>
           <li v-for="(card, index) in cards" :key="index">
-            <div v-if="deleteCheck == true" class="dlt-check">
+            <div v-if="deleteCard == index && deleteCheck" class="dlt-check">
               <p>確定要刪除嗎</p>
               <button @click="deleteHandler(card.id)" class="dlt dlt-confirm">
                 要!
               </button>
-              <button class="dlt dlt-cancel">鼻要</button>
+              <button @click="deleteCheck = false" class="dlt dlt-cancel">
+                鼻要
+              </button>
             </div>
             <p v-if="editedCard !== index" class="word">
               {{ card.word }} <span class="pos">({{ card.partOfSpeech }})</span>
@@ -24,7 +26,7 @@
             </p>
 
             <i
-              @click="deleteCheck = !deleteCheck"
+              @click="deleteModal(index)"
               class="beforeEdit fas fa-trash-alt"
             ></i>
             <!-- 更新 -->
@@ -107,6 +109,7 @@ export default {
   data() {
     return {
       deleteCheck: false,
+      deleteCard: null,
       editedCard: null,
       connectedToDB: false,
       cards: [],
@@ -161,6 +164,10 @@ export default {
       this.editedCard = index;
       console.log(this.editedCard, index);
     },
+    deleteModal(index) {
+      this.deleteCard = index;
+      this.deleteCheck = !this.deleteCheck;
+    },
     deleteHandler(index) {
       // let target = this.cards[index];
       // axios.delete(`http://localhost:3000/cards/${target.id}`).then((res) => {
@@ -191,22 +198,6 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-
-      // axios
-      //   .patch(`http://localhost:3000/cards/${target.id}`, {
-      //     word: this.editInput.word,
-      //     partOfSpeech: this.editInput.partOfSpeech,
-      //     translation: this.editInput.translation,
-      //     example: this.editInput.example,
-      //   })
-      //   .then((res) => {
-      //     this.editInput.word = "";
-      //     this.editInput.partOfSpeech = "";
-      //     this.editInput.translation = "";
-      //     this.editInput.example = "";
-      //     this.cards.splice(index, 1, res.data);
-      //     this.editedCard = null;
-      //   });
     },
     updateCancelHandler(index) {
       this.editedCard = null;
