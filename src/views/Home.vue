@@ -7,6 +7,7 @@
         <ol>
           <li v-for="(card, index) in cards" :key="index">
             <div v-if="deleteCard == index && deleteCheck" class="dlt-check">
+              <i @click="deleteCheck = false" class="fas fa-times-circle"></i>
               <p>確定要刪除嗎</p>
               <button @click="deleteHandler(card.id)" class="dlt dlt-confirm">
                 要!
@@ -247,6 +248,14 @@ export default {
             background: rgb(255, 255, 255);
             border-radius: 5px;
             box-shadow: 0 3px 7px 0 rgb(0 0 0 / 32%);
+            .fa-times-circle {
+              position: absolute;
+              right: 12px;
+              top: 8px;
+              color: rgb(71, 71, 71);
+              font-size: 18px;
+              cursor: pointer;
+            }
             p {
               width: 100%;
               font-size: 25px;
