@@ -57,9 +57,7 @@
                   @keyup.enter="updateHandler(index)"
                 />
               </p>
-
-             
-            <!-- </div> -->
+         </div> -->
 
             <form v-if="editedCard === index && updateCancelHandler" action="">
               <label for="">單字:</label>

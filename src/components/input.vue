@@ -17,6 +17,7 @@
         v-model.trim="input.example"
         @keyup.enter="addWord"
       />
+      <br />
       <button
         class="btn btn-disabled"
         v-if="
