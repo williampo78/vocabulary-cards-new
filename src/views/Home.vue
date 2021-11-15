@@ -89,9 +89,20 @@
                 v-model.trim="editInput.example"
                 @keyup.enter="addWord"
               />
+
               <br />
-              <button @click="updateHandler(index)">更新</button>
-              <button @click="updateCancelHandler(index)">取消</button>
+              <button
+                class="btn update"
+                @click.prevent="updateHandler(card.id)"
+              >
+                更新
+              </button>
+              <button
+                class="btn cancel"
+                @click.prevent="updateCancelHandler(index)"
+              >
+                取消
+              </button>
             </form>
           </li>
         </ol>
@@ -104,7 +115,17 @@
 // @ is an alias to /src
 import Input from "@/components/Input.vue";
 // import axios from "axios";
-import { db, colRef, getDocs, deleteDoc, doc, onSnapshot } from "../firebase";
+import {
+  db,
+  colRef,
+  getDocs,
+  deleteDoc,
+  updateDoc,
+  doc,
+  onSnapshot,
+  query,
+  orderBy,
+} from "../firebase";
 
 export default {
   name: "Home",
@@ -115,9 +136,7 @@ export default {
   data() {
     return {
       editedCard: null,
-      edit: false,
       connectedToDB: false,
-      // cards: [{ word: "", partOfSpeech: "", translation: "", example: "" }],
       cards: [],
       input: {
         word: "",
@@ -139,7 +158,8 @@ export default {
     //   this.cards = res.data;
     //   this.connectedToDB = true;
     // });
-    getDocs(colRef)
+    const q = query(colRef, orderBy("time", "desc"));
+    getDocs(q)
       .then((snapshot) => {
         snapshot.docs.forEach((doc) => {
           // this.cards = [];
@@ -152,9 +172,7 @@ export default {
         console.log(err);
       });
 
-    // const q = query(colRef);
-
-    onSnapshot(colRef, (snapshot) => {
+    onSnapshot(q, (snapshot) => {
       this.cards = [];
       snapshot.docs.forEach((doc) => {
         this.cards.push({ ...doc.data(), id: doc.id });
@@ -164,7 +182,6 @@ export default {
   },
   methods: {
     startEdit(index) {
-      // this.edit = true;
       this.editInput.word = this.cards[index].word;
       this.editInput.partOfSpeech = this.cards[index].partOfSpeech;
       this.editInput.translation = this.cards[index].translation;
@@ -183,27 +200,44 @@ export default {
         console.log("deleted");
       });
     },
-    updateHandler(index) {
-      let target = this.cards[index];
-      axios
-        .patch(`http://localhost:3000/cards/${target.id}`, {
-          word: this.editInput.word,
-          partOfSpeech: this.editInput.partOfSpeech,
-          translation: this.editInput.translation,
-          example: this.editInput.example,
+    updateHandler(id) {
+      // let target = this.cards[index];
+      console.log("index", id);
+      const docRef = doc(db, "cards", id);
+      const vm = this;
+      updateDoc(docRef, {
+        word: vm.editInput.word.toLowerCase(),
+        partOfSpeech: vm.editInput.partOfSpeech.toLowerCase(),
+        translation: vm.editInput.translation,
+        example:
+          vm.editInput.example.charAt(0).toUpperCase() +
+          vm.editInput.example.slice(1),
+      })
+        .then(() => {
+          vm.editedCard = null;
         })
-        .then((res) => {
-          this.editInput.word = "";
-          this.editInput.partOfSpeech = "";
-          this.editInput.translation = "";
-          this.editInput.example = "";
-          this.cards.splice(index, 1, res.data);
-          this.editedCard = null;
+        .catch((err) => {
+          console.log(err);
         });
+
+      // axios
+      //   .patch(`http://localhost:3000/cards/${target.id}`, {
+      //     word: this.editInput.word,
+      //     partOfSpeech: this.editInput.partOfSpeech,
+      //     translation: this.editInput.translation,
+      //     example: this.editInput.example,
+      //   })
+      //   .then((res) => {
+      //     this.editInput.word = "";
+      //     this.editInput.partOfSpeech = "";
+      //     this.editInput.translation = "";
+      //     this.editInput.example = "";
+      //     this.cards.splice(index, 1, res.data);
+      //     this.editedCard = null;
+      //   });
     },
     updateCancelHandler(index) {
       this.editedCard = null;
-      this.edit = false;
     },
   },
 };
@@ -258,6 +292,7 @@ export default {
           }
           .translate {
             font-size: 25px;
+            font-weight: 700;
           }
           .example {
             font-size: 18px;
@@ -308,8 +343,9 @@ export default {
 
           form {
             padding: 10px 0;
+            width: 100%;
             max-width: 300px;
-            min-width: 50vw;
+            // min-width: 50vw;
             min-height: 200px;
             font-size: 20px;
             font-weight: bold;
@@ -326,17 +362,32 @@ export default {
               padding-left: 3px;
               word-wrap: break-word;
             }
+            .word {
+              font-size: 20px;
+              color: #000;
+            }
+            .pos {
+              font-size: 20px;
+              color: #000;
+            }
+            .translate {
+              font-size: 20px;
+              color: #000;
+              font-weight: normal;
+            }
+
             textarea {
+              vertical-align: middle;
               border: none;
               outline: none;
               border-bottom: 1px solid black;
               resize: none;
-              height: auto;
+              min-height: 30px;
             }
             .btn {
-              margin-top: 15px;
-              width: 100px;
-              height: 45px;
+              margin: 10px 5px;
+              width: 80px;
+              height: 42px;
               background: rgba(17, 48, 100, 0.61);
               border: none;
               border-radius: 5px;
@@ -344,9 +395,12 @@ export default {
               font-size: 16px;
               font-weight: 700;
             }
-            .btn-disabled {
-              background: rgba(140, 171, 226, 0.61);
+            .update {
+              background: rgba(12, 172, 84, 0.81);
               color: #fff;
+            }
+            .cancel {
+              background: rgba(17, 48, 100, 0.61);
             }
           }
         }

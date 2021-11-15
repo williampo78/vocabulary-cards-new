@@ -49,7 +49,7 @@ export default {
     text-decoration: none;
 
     &.router-link-exact-active {
-      color: #2b476e;
+      color: #2e5386;
     }
   }
 }

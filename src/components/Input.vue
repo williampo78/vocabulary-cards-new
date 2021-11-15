@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { colRef, addDoc, getDocs } from "../firebase";
+import { colRef, addDoc, serverTimestamp } from "../firebase";
 
 import axios from "axios";
 export default {
@@ -79,6 +79,7 @@ export default {
         partOfSpeech: input.partOfSpeech.toLowerCase(),
         translation: input.translation,
         example: input.example.charAt(0).toUpperCase() + input.example.slice(1),
+        time: serverTimestamp(),
       }).then((res) => {
         console.log(res);
       });
