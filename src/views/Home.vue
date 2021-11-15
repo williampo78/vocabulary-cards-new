@@ -6,6 +6,13 @@
       <div class="cardsBox">
         <ol>
           <li v-for="(card, index) in cards" :key="index">
+            <div v-if="deleteCheck == true" class="dlt-check">
+              <p>確定要刪除嗎</p>
+              <button @click="deleteHandler(card.id)" class="dlt dlt-confirm">
+                要!
+              </button>
+              <button class="dlt dlt-cancel">鼻要</button>
+            </div>
             <p v-if="editedCard !== index" class="word">
               {{ card.word }} <span class="pos">({{ card.partOfSpeech }})</span>
             </p>
@@ -16,48 +23,12 @@
               e.g. {{ card.example }}
             </p>
 
-            <!-- 更新 -->
-            <i @click="startEdit(index)" class="beforeEdit fas fa-edit"></i>
             <i
-              @click="deleteHandler(card.id)"
+              @click="deleteCheck = !deleteCheck"
               class="beforeEdit fas fa-trash-alt"
             ></i>
-            <!-- <div
-              class="edit"
-              v-if="editedCard === index && updateCancelHandler"
-            >
-              <p>
-                <input
-                  class="edit-input edit-word"
-                  type="text"
-                  v-model.trim="editInput.word"
-                />
-                <span>
-                  (<input
-                    class="edit-input edit-pos"
-                    type="text"
-                    v-model.trim="editInput.partOfSpeech"
-                  />)
-                </span>
-              </p>
-
-              <p>
-                <input
-                  class="edit-input edit-translate"
-                  type="text"
-                  v-model.trim="editInput.translation"
-                />
-              </p>
-
-              <p>
-                <input
-                  class="edit-input edit-example"
-                  type="text"
-                  v-model.trim="editInput.example"
-                  @keyup.enter="updateHandler(index)"
-                />
-              </p>
-         </div> -->
+            <!-- 更新 -->
+            <i @click="startEdit(index)" class="beforeEdit fas fa-edit"></i>
 
             <form v-if="editedCard === index && updateCancelHandler" action="">
               <label for="">單字:</label>
@@ -135,6 +106,7 @@ export default {
   },
   data() {
     return {
+      deleteCheck: false,
       editedCard: null,
       connectedToDB: false,
       cards: [],
@@ -245,7 +217,7 @@ export default {
 
 <style lang="scss" scoped>
 .home {
-  width: 100vw;
+  width: 100%;
   .card {
     margin: 20px 0;
     display: flex;
@@ -261,7 +233,7 @@ export default {
         flex-direction: column;
         align-items: center;
         list-style-type: none;
-        width: 100vw;
+        width: 100%;
         li {
           display: none;
           position: relative;
@@ -275,7 +247,49 @@ export default {
           display: flex;
           flex-direction: column;
           align-items: center;
-
+          .dlt-check {
+            position: absolute;
+            text-align: center;
+            top: 18%;
+            width: 85%;
+            height: 65%;
+            background: rgb(255, 255, 255);
+            border-radius: 5px;
+            box-shadow: 0 3px 7px 0 rgb(0 0 0 / 32%);
+            p {
+              width: 100%;
+              font-size: 25px;
+              font-weight: bold;
+              text-align: center;
+              color: rgb(0, 0, 0);
+            }
+            .dlt {
+              width: 35%;
+              height: 28%;
+              margin: 5px;
+              outline: none;
+              border: none;
+              border-radius: 5px;
+              font-size: 18px;
+              font-weight: 600;
+              color: #000;
+              cursor: pointer;
+            }
+            .dlt-confirm {
+              background-color: rgba(238, 112, 95, 0.68);
+              &:hover {
+                background-color: rgb(238, 112, 95);
+                color: #fff;
+              }
+            }
+            .dlt-cancel {
+              background-color: rgba(51, 98, 151, 0.68);
+              &:hover {
+                background-color: rgb(51, 98, 151);
+                color: #fff;
+              }
+            }
+          }
           p {
             // display: none;
             width: 90%;

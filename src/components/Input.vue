@@ -97,7 +97,7 @@ export default {
 
 <style lang="scss" scoped>
 .input {
-  width: 100vw;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -105,7 +105,7 @@ export default {
   form {
     padding: 10px 0;
     max-width: 300px;
-    min-width: 50vw;
+    min-width: 35vw;
     min-height: 200px;
     font-size: 23px;
     font-weight: bold;
@@ -131,10 +131,12 @@ export default {
       color: #fff;
       font-size: 16px;
       font-weight: 700;
+      cursor: pointer;
     }
     .btn-disabled {
       background: rgba(140, 171, 226, 0.61);
       color: #fff;
+      cursor: default;
     }
   }
 }
