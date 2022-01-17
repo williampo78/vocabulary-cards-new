@@ -1,6 +1,6 @@
 <template>
   <div class="input">
-    <form action="">
+    <form>
       <label for="">單字:</label>
       <input class="word" type="text" ref="word" v-model.trim="input.word" />
       <br />
@@ -15,7 +15,7 @@
         class="example"
         type="text"
         v-model.trim="input.example"
-        @keyup.enter="addWord"
+        @keydown.enter="addWord"
       />
       <br />
       <button
@@ -53,27 +53,6 @@ export default {
       if (!input) {
         return false;
       }
-      //   axios
-      //     .post("http://localhost:3000/cards", {
-      //       word: input.word.toLowerCase(),
-      //       partOfSpeech: input.partOfSpeech.toLowerCase(),
-      //       translation: input.translation,
-      //       example:
-      //         input.example.charAt(0).toUpperCase() + input.example.slice(1),
-      //     })
-      //     .then((res) => {
-      //       input.word = "";
-      //       input.partOfSpeech = "";
-      //       input.translation = "";
-      //       input.example = "";
-      //       this.cards.push(res.data);
-      //       // console.log(res);
-      //     })
-      //     .catch((err) => {
-      //       console.log(err.response);
-      //     });
-      // },
-      // this.cards.push(this.input);
       addDoc(colRef, {
         word: input.word.toLowerCase(),
         partOfSpeech: input.partOfSpeech.toLowerCase(),

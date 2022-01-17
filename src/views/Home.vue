@@ -14,10 +14,10 @@
               <i @click="deleteCheck = false" class="fas fa-times-circle"></i>
               <p>確定要刪除嗎</p>
               <button @click="deleteHandler(card.id)" class="dlt dlt-confirm">
-                要!
+                確定
               </button>
               <button @click="deleteCheck = false" class="dlt dlt-cancel">
-                鼻要
+                取消
               </button>
             </div>
 
@@ -134,16 +134,11 @@ export default {
     };
   },
   mounted() {
-    // axios.get("http://localhost:3000/cards").then((res) => {
-    //   // console.log(res.data);
-    //   this.cards = res.data;
-    //   this.connectedToDB = true;
-    // });
     const q = query(colRef, orderBy("time", "desc"));
     getDocs(q)
       .then((snapshot) => {
+        this.cards = [];
         snapshot.docs.forEach((doc) => {
-          // this.cards = [];
           this.cards.push({ ...doc.data(), id: doc.id });
         });
         console.log(this.cards);
@@ -159,6 +154,7 @@ export default {
         this.cards.push({ ...doc.data(), id: doc.id });
       });
       console.log("cards:", this.cards);
+      console.log("snapshot");
     });
   },
   methods: {
@@ -177,11 +173,7 @@ export default {
       this.deleteCheck = true;
     },
     deleteHandler(index) {
-      // let target = this.cards[index];
-      // axios.delete(`http://localhost:3000/cards/${target.id}`).then((res) => {
-      //   this.cards.splice(index, 1);
-      //   console.log(res);
-      // });
+      this.deleteCheck = false;
       const docRef = doc(db, "cards", index);
       deleteDoc(docRef).then(() => {
         console.log("deleted");
