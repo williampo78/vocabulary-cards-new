@@ -1,8 +1,6 @@
 <template>
   <div class="learn">
-    <!-- <h1>This is an about page</h1> -->
     <div v-if="connectedToDB" class="card">
-      <!-- <button @click="changeIndex(-1)"><=</button> -->
       <i @click="changeIndex(-1)" class="fas fa-chevron-left"></i>
 
       <ul>
@@ -13,14 +11,12 @@
           <span v-if="answer">{{ currentCard.translation }}</span>
         </li>
       </ul>
-      <!-- <button @click="changeIndex(1)">=></button> -->
       <i @click="changeIndex(1)" class="fas fa-chevron-right"></i>
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
 import { db, colRef, getDocs } from "../firebase";
 
 export default {
@@ -33,21 +29,6 @@ export default {
     };
   },
   mounted() {
-    // axios
-    //   .get(
-    //     "https://vocabulary-cards-fcb93-default-rtdb.firebaseio.com/cards.json"
-    //   )
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     this.connectedToDB = true;
-    //     this.cards = res.data;
-    //     console.log("cards", this.cards);
-    //   });
-    // axios.get("http://localhost:3000/cards").then((res) => {
-    //   console.log(res.data);
-    //   this.cards = res.data;
-    //   this.connectedToDB = true;
-    // });
     getDocs(colRef).then((snapshot) => {
       this.connectedToDB = true;
       snapshot.docs.forEach((doc) => {

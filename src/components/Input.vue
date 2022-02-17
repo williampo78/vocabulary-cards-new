@@ -40,7 +40,6 @@
 <script>
 import { colRef, addDoc, serverTimestamp } from "../firebase";
 
-import axios from "axios";
 export default {
   name: "Input",
   props: {

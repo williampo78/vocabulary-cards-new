@@ -93,7 +93,6 @@
 <script>
 // @ is an alias to /src
 import Input from "@/components/Input.vue";
-// import axios from "axios";
 import {
   db,
   colRef,
@@ -172,9 +171,9 @@ export default {
       this.deleteCard = index;
       this.deleteCheck = true;
     },
-    deleteHandler(index) {
+    deleteHandler(id) {
       this.deleteCheck = false;
-      const docRef = doc(db, "cards", index);
+      const docRef = doc(db, "cards", id);
       deleteDoc(docRef).then(() => {
         console.log("deleted");
       });
